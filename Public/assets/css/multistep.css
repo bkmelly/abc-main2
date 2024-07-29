@@ -1,0 +1,222 @@
+/*custom font*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+/*basic reset*/
+* {margin: 0; padding: 0;}
+
+html {
+    /* height: 100%; */
+    /*Image only BG fallback*/
+    
+    /*background = gradient + image pattern combo*/
+    /* background: 
+     linear-gradient(60deg, #000 0%, #8438ff 100%); */
+}
+
+body {
+    font-family: montserrat, arial, verdana;
+}
+/*form styles*/
+#msform {
+    height: 100%;
+    width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+}
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    box-sizing: border-box;
+    width: 80%;
+    margin: 0 10%;
+    
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+    display: none;
+}
+/*inputs*/
+#msform input, #msform textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat;
+    color: #2C3E50;
+    font-size: 13px;
+}
+/*buttons*/
+#msform .action-button {
+    width: 100px;
+    background: linear-gradient(60deg, #8438ff 0%, #020024 100%); 
+    font-weight: bold;
+    color: white;
+    border: 1px solid #8438ff;
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #8438ff;
+   
+}
+/*headings*/
+.fs-title {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+.fs-subtitle {
+    font-weight: normal;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+/*progressbar*/
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+}
+#progressbar li {
+    list-style-type: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 9px;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+#progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 20px;
+    line-height: 20px;
+    display: block;
+    font-size: 10px;
+    color: #333;
+    background: white;
+    border-radius: 3px;
+    margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: white;
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+    /*connector not needed before the first step*/
+    content: none; 
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,  #progressbar li.active:after{
+    background: linear-gradient(60deg, #8438ff 0%, #020024 100%); 
+    color: white;
+}
+
+/* Color picker styles */
+.color-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 150px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.color-option {
+    width: 45%;
+    height: 40px;
+    margin: 2.5%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.color-option:hover {
+    border-color: #333;
+}
+.thank-you-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Initially hidden */
+    align-items: center;
+    max-width: 350px;
+    font-family: montserrat, arial, verdana;
+    overflow: hidden;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.thank-you-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+}
+
+.popup-thumbnail {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.popup-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.admin-label {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    margin-bottom: 2px;
+}
+
+.popup-text {
+    font-size: 14px;
+    color: #333;
+    display: inline-block;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
