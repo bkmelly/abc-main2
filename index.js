@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const session = require('express-session');
 const bodyParser = require('body-parser'); 
 const path = require('path');
+const MySQLStore = require('express-mysql-session')(session); // Import MySQL session store
 require('dotenv').config(); // Load environment variables from .env file
 
 // Create a database connection using environment variables
@@ -14,6 +15,21 @@ const dbconn = mysql.createConnection({
     database: process.env.DB_NAME // Use DB_NAME from .env
 });
 
+// Create MySQL session store
+const sessionStore = new MySQLStore({
+    expiration: 86400000, // 1 day in milliseconds
+    createDatabaseTable: true, // Create the session table if it doesn't exist
+    schema: {
+        tableName: 'sessions',
+        columnNames: {
+            session_id: 'session_id',
+            expires: 'expires',
+            data: 'data',
+        }
+    }
+});
+
+// Initialize express app
 const app = express();
 
 // Middleware application
@@ -22,10 +38,12 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 
+// Configure session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
+    store: sessionStore, // Use the MySQL session store
     cookie: { secure: false } // Set to true if using https
 }));
 
@@ -108,7 +126,6 @@ app.get('/signin', (req, res) => {
 app.get('/Kitchen', (req, res) => {
     res.render('multistep.ejs');
 });
-
 app.get('/check-out', (req, res) => {
     res.render('check-out.ejs');
 });
