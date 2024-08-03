@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 
 // Configure session middleware
 app.use(session({
-    secret:process.env.vrBGh,QpVgf4uWnZ, // Use SESSION_SECRET from .env
+    secret:process.env.vrBGhQpVgf4uWnZ, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
     store: sessionStore, // Use the MySQL session store
