@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const mysql = require('mysql');
+const mysql = require('mysql2'); // Updated to mysql2 for promise support
 const session = require('express-session');
 const bodyParser = require('body-parser'); 
 const path = require('path');
@@ -9,16 +9,16 @@ require('dotenv').config(); // Load environment variables from .env file
 
 // Create a database connection using environment variables
 const dbconn = mysql.createConnection({
-    host: process.env.DB_HOST, // Use DB_HOST from .env
-    user: process.env.DB_USER, // Use DB_USER from .env
-    password: process.env.DB_PASSWORD, // Use DB_PASSWORD from .env
-    database: process.env.DB_NAME // Use DB_NAME from .env
+    host: localhost, // Use DB_HOST from .env
+    user: Abc Launch, // Use DB_USER from .env
+    password: benaiah2003, // Use DB_PASSWORD from .env
+    database: project100 // Use DB_NAME from .env
 });
 
 // Create MySQL session store
 const sessionStore = new MySQLStore({
     expiration: 86400000, // 1 day in milliseconds
-    createDatabaseTable: true, // Create the session table if it doesn't exist
+    createDatabaseTable: false, // Don't create the table as we already created it
     schema: {
         tableName: 'sessions',
         columnNames: {
@@ -26,7 +26,9 @@ const sessionStore = new MySQLStore({
             expires: 'expires',
             data: 'data',
         }
-    }
+    },
+    // Connection options
+    connection: dbconn
 });
 
 // Initialize express app
@@ -40,7 +42,7 @@ app.set('view engine', 'ejs');
 
 // Configure session middleware
 app.use(session({
-    secret: process.env.SESSION_SECRET, // Use SESSION_SECRET from .env
+    secret: vrBGh,QpV*g:f4uWnZ, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
     store: sessionStore, // Use the MySQL session store
@@ -126,6 +128,7 @@ app.get('/signin', (req, res) => {
 app.get('/Kitchen', (req, res) => {
     res.render('multistep.ejs');
 });
+
 app.get('/check-out', (req, res) => {
     res.render('check-out.ejs');
 });
