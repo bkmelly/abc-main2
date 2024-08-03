@@ -4,7 +4,21 @@ const mysql = require('mysql');
 const session = require('express-session');
 const bodyParser = require('body-parser'); 
 const path = require('path');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 require('dotenv').config(); // Load environment variables from .env file
+
+// Create a Redis client using environment variables
+const redisClientOptions = {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+};
+
+if (process.env.REDIS_PASSWORD) {
+    redisClientOptions.password = process.env.REDIS_PASSWORD;
+}
+
+const redisClient = redis.createClient(redisClientOptions);
 
 // Create a database connection using environment variables
 const dbconn = mysql.createConnection({
@@ -23,6 +37,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 
 app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
@@ -108,6 +123,7 @@ app.get('/signin', (req, res) => {
 app.get('/Kitchen', (req, res) => {
     res.render('multistep.ejs');
 });
+
 app.get('/check-out', (req, res) => {
     res.render('check-out.ejs');
 });
