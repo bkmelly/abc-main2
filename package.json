@@ -2,9 +2,9 @@
   "name": "abc-main2",
   "version": "1.0.0",
   "description": "My fullstack application",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
