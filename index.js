@@ -9,10 +9,10 @@ require('dotenv').config(); // Load environment variables from .env file
 
 // Create a database connection using environment variables
 const dbconn = mysql.createConnection({
-    host: localhost, // Use DB_HOST from .env
-    user: abc_launch, // Use DB_USER from .env
-    password: benaiah2003, // Use DB_PASSWORD from .env
-    database: project100 // Use DB_NAME from .env
+    host:process.env.localhost, // Use DB_HOST from .env
+    user:process.env.abc_launch, // Use DB_USER from .env
+    password:process.env.benaiah2003, // Use DB_PASSWORD from .env
+    database:process.env.project100 // Use DB_NAME from .env
 });
 
 // Create MySQL session store
@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 
 // Configure session middleware
 app.use(session({
-    secret: vrBGh,QpVg:f4uWnZ, // Use SESSION_SECRET from .env
+    secret:process.env.vrBGh,QpVg:f4uWnZ, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
     store: sessionStore, // Use the MySQL session store
