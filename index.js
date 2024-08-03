@@ -4,12 +4,14 @@ const mysql = require('mysql');
 const session = require('express-session');
 const bodyParser = require('body-parser'); 
 const path = require('path');
+require('dotenv').config(); // Load environment variables from .env file
 
+// Create a database connection using environment variables
 const dbconn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'project 100' // Update to your database name if different
+    host: process.env.DB_HOST, // Use DB_HOST from .env
+    user: process.env.DB_USER, // Use DB_USER from .env
+    password: process.env.DB_PASSWORD, // Use DB_PASSWORD from .env
+    database: process.env.DB_NAME // Use DB_NAME from .env
 });
 
 const app = express();
@@ -21,7 +23,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 
 app.use(session({
-    secret: 'secret-key',
+    secret: process.env.SESSION_SECRET, // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false } // Set to true if using https
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
     const adminRoutes = ["/projects", "/admin"];
     if (req.session && req.session.user) {
         res.locals.user = req.session.user;
-        if (req.session.user.email !== "benaiahlagat24@gmail.com" && adminRoutes.includes(req.path)) { // Replace with actual admin email
+        if (req.session.user.email !== process.env.ADMIN_EMAIL && adminRoutes.includes(req.path)) { // Use ADMIN_EMAIL from .env
             res.status(401).send("Unauthorized Access. Only admins allowed.");
         } else {
             next();
@@ -187,9 +189,6 @@ app.post('/subscribe', (req, res) => {
     });
 });
 
-
-
-
 // Client dashboard
 app.get('/dashboard', isAuthenticated, (req, res) => {
     res.render('dashboard.ejs', { user: req.session.user });
@@ -220,6 +219,8 @@ app.get('/admin', isAuthenticated, (req, res) => {
     res.render('admin.ejs');
 });
 
-app.listen(7000, () => {
-    console.log('Server is running on port 7000');
+// Listen on the port specified by the environment variable or default to 7000
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
