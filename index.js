@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const session = require('express-session');
 const bodyParser = require('body-parser'); 
 const path = require('path');
-const RedisStore = require('connect-redis').default(session);
+const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 require('dotenv').config(); // Load environment variables from .env file
 
@@ -19,6 +19,7 @@ if (process.env.REDIS_PASSWORD) {
 }
 
 const redisClient = redis.createClient(redisClientOptions);
+redisClient.connect().catch(console.error);
 
 // Create a database connection using environment variables
 const dbconn = mysql.createConnection({
